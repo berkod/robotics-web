@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/*
+ * Pine & Circuit brand tokens — canonical source is design.md in
+ * openspec/changes/robotics-team-website/. Keep this file in sync with it.
+ */
+:root {
+  --pine: #00482b; /* primary */
+  --deep-pine: #002818; /* shade / ink */
+  --signal: #008751; /* secondary */
+  --gold: #f5ed3d; /* accent, fills only */
+  --mint: #d9f2e8; /* tint / surfaces */
+  --white: #ffffff; /* ground */
+}
+
+@theme {
+  --color-pine: var(--pine);
+  --color-deep-pine: var(--deep-pine);
+  --color-signal: var(--signal);
+  --color-gold: var(--gold);
+  --color-mint: var(--mint);
+  --color-white: var(--white);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  @apply bg-white font-sans text-deep-pine antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-display;
+}
+
+/* Circuit Gold is a fill accent only — never a text color on white. See design.md. */

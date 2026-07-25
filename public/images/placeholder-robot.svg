@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder robot photo</title>
+  <desc id="desc">A placeholder graphic standing in for a real robot photo</desc>
+  <defs>
+    <pattern id="circuit" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M0 40 H30 M50 40 H80 M40 0 V30 M40 50 V80" stroke="#008751" stroke-width="2" fill="none" opacity="0.35"/>
+      <circle cx="40" cy="40" r="5" fill="#F5ED3D" opacity="0.6"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="#00482B"/>
+  <rect width="800" height="600" fill="url(#circuit)"/>
+  <rect x="0" y="0" width="800" height="600" fill="none" stroke="#D9F2E8" stroke-width="6"/>
+  <text x="400" y="290" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="700" fill="#FFFFFF">PHOTO PLACEHOLDER</text>
+  <text x="400" y="335" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#D9F2E8">Real robot photo needed — see missing-assets.md</text>
+</svg>

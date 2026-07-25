@@ -1,0 +1,89 @@
+---
+import Logo from "./Logo.astro";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/robots", label: "Our Robots" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-pine text-white shadow-sm">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+    <Logo />
+
+    <nav aria-label="Primary" class="hidden sm:block">
+      <ul class="flex items-center gap-6 text-sm font-medium">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={currentPath === link.href ? "page" : undefined}
+                class="rounded-sm px-1 py-1 transition-colors hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold aria-[current=page]:text-gold"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      id="nav-toggle"
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-md sm:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+    >
+      <span class="sr-only">Toggle navigation menu</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        class="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    aria-label="Primary mobile"
+    class="hidden border-t border-white/10 sm:hidden"
+  >
+    <ul class="flex flex-col gap-1 px-4 py-3 text-sm font-medium">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={currentPath === link.href ? "page" : undefined}
+              class="block rounded-sm px-2 py-2 hover:bg-white/10 hover:text-gold aria-[current=page]:text-gold"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const mobileNav = document.getElementById("mobile-nav");
+
+  toggle?.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    mobileNav?.classList.toggle("hidden");
+  });
+</script>
