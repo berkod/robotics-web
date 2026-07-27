@@ -27,6 +27,16 @@ const { title, description = "Placeholder description — see missing-assets.md.
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
+    <!--
+      Netlify Identity, loaded site-wide (not just on /admin). This is only
+      needed because we're on Netlify's free tier, which can't customize the
+      Identity email templates' links to point straight at /admin/ (that's a
+      Pro-plan feature — see deploy.md Part 2). Invite/recovery emails link to
+      the site root instead, so the widget has to be present here to catch
+      the #invite_token / #recovery_token in the URL and open the "set your
+      password" modal, then redirect into /admin/ once logged in.
+    -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body class="flex min-h-screen flex-col">
     <a
@@ -40,5 +50,16 @@ const { title, description = "Placeholder description — see missing-assets.md.
       <slot />
     </main>
     <Footer />
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>

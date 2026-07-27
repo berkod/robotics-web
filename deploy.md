@@ -76,24 +76,34 @@ Once the team has a domain to point at the site:
 ## Part 2: CMS auth
 
 The codebase already has Decap CMS wired up at `/admin` (`public/admin/index.html`
-+ `config.yml`), configured for **invite-only** registration — the Identity
-widget is only loaded on the admin page itself, not the public site, so
-there's nothing for the wider public to stumble into.
++ `config.yml`), configured for **invite-only** registration.
+
+**Free-tier note:** Netlify's Identity email templates (including where the
+invite/recovery link points) are a Pro-plan feature — on the free tier there's
+no way to make invite emails link straight to `/admin/`, they always link to
+the site root (`{{ siteURL }}/#invite_token=...`). To work around that, the
+Netlify Identity widget is loaded **site-wide** (`src/layouts/Layout.astro`),
+not just on the admin page — this is Decap's own documented fallback for this
+exact situation ([Decap's Netlify Identity guide](https://decapcms.org/docs/choosing-a-backend/),
+"site-wide registration"). When someone clicks their invite link, the widget
+on the homepage catches the token in the URL, pops the "set your password"
+modal right there, and redirects to `/admin/` once they're logged in. If the
+team ever upgrades to Pro, switch the email templates to link straight to
+`/admin/#...` and the site-wide widget can be removed (revert to only
+loading it in `public/admin/index.html`).
 
 1. **Site configuration → Identity → Enable Identity**.
 2. **Identity → Registration** → set to **Invite only**.
 3. **Identity → Services → enable Git Gateway** — this lets Identity-
    authenticated users commit content changes through Netlify without each
    person needing their own GitHub account or token.
-4. **Identity → Emails** → edit the invitation/confirmation templates and
-   change the link from `{{ siteURL }}/#...` to `{{ siteURL }}/admin/#...`
-   (invite-only setups need this so the email link lands on the CMS, not the
-   public homepage — see [Decap's Netlify Identity guide](https://decapcms.org/docs/choosing-a-backend/)).
-5. **Identity → Invite users** → send an invite to each mentor/student who
-   should be able to edit content.
-6. Invited users log in at `https://<your-site>/admin` with the
-   email/password from their invite, and see a form-based editor for Our
-   Robots, Team Leadership, Sponsors, and the About/Outreach page copy.
+4. **Identity → Invite users** → send an invite to each mentor/student who
+   should be able to edit content. They'll get an email linking to the site
+   root — that's expected, the widget handles it (see above).
+5. Invited users click the link, set a password in the modal that pops up,
+   and land on `/admin` automatically. After that, they can always go
+   straight to `https://<your-site>/admin` to log in and edit Our Robots,
+   Team Leadership, Sponsors, and the About/Outreach page copy.
 
 ## Rolling back a bad deploy
 
