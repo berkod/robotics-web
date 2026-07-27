@@ -36,7 +36,7 @@ const { title, description = "Placeholder description — see missing-assets.md.
       the #invite_token / #recovery_token in the URL and open the "set your
       password" modal, then redirect into /admin/ once logged in.
     -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body class="flex min-h-screen flex-col">
     <a
@@ -50,7 +50,7 @@ const { title, description = "Placeholder description — see missing-assets.md.
       <slot />
     </main>
     <Footer />
-    <script>
+    <script is:inline>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {
           if (!user) {
