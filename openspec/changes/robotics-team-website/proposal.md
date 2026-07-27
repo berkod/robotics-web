@@ -33,5 +33,5 @@ The team has no web presence today, which makes it harder to recruit students, c
 - **New codebase**: static site project (framework chosen in `design.md`), CMS config, and CI deploy config — none of this exists yet.
 - **Third-party dependencies**: TBA (The Blue Alliance) public API, Instagram/Meta embed or API, Google Maps embed, git-based CMS (e.g. Decap CMS), static host (e.g. Netlify/Vercel).
 - **Content ownership**: team mentors/students become responsible for keeping CMS-managed collections (leadership, robots, sponsors) current each season (Phase 2 onward).
-- **Repo docs**: the repo-root `claude.md` is repurposed from a bare color-palette reference into a maintainer handoff doc; the palette itself moves into `design.md` as the canonical source. A new `missing-assets.md` in this change tracks real content/images still needed from the team before Phase 2's content pass.
+- **Repo docs**: the repo-root doc is repurposed from a bare color-palette reference into a maintainer handoff doc, now living in `README.md`; the palette itself moves into `design.md` as the canonical source. A new `missing-assets.md` in this change tracks real content/images still needed from the team before Phase 2's content pass.
 - **No existing systems affected** — greenfield build.

@@ -1,0 +1,63 @@
+---
+import { INSTAGRAM_LINK } from "../lib/site";
+
+// Requires a third-party embed widget URL (e.g. SnapWidget or LightWidget —
+// see design.md Decision 5) in PUBLIC_INSTAGRAM_EMBED_URL. The team needs to
+// sign up with a provider themselves — see missing-assets.md. Until then,
+// or if the embed fails to load, this shows the fallback follow-us link.
+const embedUrl = import.meta.env.PUBLIC_INSTAGRAM_EMBED_URL as string | undefined;
+const configured = Boolean(embedUrl);
+const profileHref = INSTAGRAM_LINK;
+const handle = profileHref.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/$/, "");
+---
+
+<div data-ig-widget class="h-full">
+  <div
+    data-ig-fallback
+    class:list={[
+      "flex h-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-signal/40 bg-mint px-6 py-12 text-center",
+      configured && "hidden",
+    ]}
+  >
+    <p class="font-display text-lg font-semibold text-deep-pine">Instagram feed</p>
+    <p class="text-sm text-deep-pine">
+      {
+        configured
+          ? "The feed is temporarily unavailable."
+          : "Not connected yet — see missing-assets.md."
+      }
+    </p>
+    <a
+      href={profileHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-1 text-sm font-semibold text-pine underline decoration-signal underline-offset-4 hover:text-deep-pine"
+    >
+      Follow @{handle} on Instagram &rarr;
+    </a>
+  </div>
+
+  {
+    configured && (
+      <iframe
+        data-ig-iframe
+        src={embedUrl}
+        title="Instagram feed"
+        loading="lazy"
+        class="h-full min-h-[16rem] w-full rounded-lg border-0"
+      />
+    )
+  }
+</div>
+
+<script define:vars={{ configured }}>
+  if (configured) {
+    const widget = document.currentScript?.previousElementSibling;
+    const fallback = widget?.querySelector("[data-ig-fallback]");
+    const iframe = widget?.querySelector("[data-ig-iframe]");
+    iframe?.addEventListener("error", () => {
+      iframe.classList.add("hidden");
+      fallback?.classList.remove("hidden");
+    });
+  }
+</script>

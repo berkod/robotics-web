@@ -1,0 +1,137 @@
+---
+// Live TBA data requires PUBLIC_TBA_AUTH_KEY, PUBLIC_TBA_TEAM_KEY, and
+// PUBLIC_TBA_YEAR env vars (see missing-assets.md). Until those are set,
+// this renders its fallback state — the same state a live API failure
+// falls back to.
+import { BLUE_ALLIANCE_TEAM_PAGE } from "../lib/site";
+
+interface Props {
+  variant?: "full" | "teaser";
+}
+
+const { variant = "full" } = Astro.props;
+
+const teamKey = import.meta.env.PUBLIC_TBA_TEAM_KEY as string | undefined;
+const authKey = import.meta.env.PUBLIC_TBA_AUTH_KEY as string | undefined;
+const configured = Boolean(teamKey && authKey);
+
+const profileHref = BLUE_ALLIANCE_TEAM_PAGE;
+---
+
+<div data-tba-widget data-tba-variant={variant} class="h-full">
+  <div
+    data-tba-fallback
+    class:list={[
+      "flex h-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-signal/40 bg-mint px-6 py-12 text-center",
+      configured && "hidden",
+    ]}
+  >
+    <p class="font-display text-lg font-semibold text-deep-pine">Match results &amp; awards</p>
+    <p class="text-sm text-deep-pine">
+      {
+        configured
+          ? "Live results are temporarily unavailable."
+          : "Live results aren't connected yet — see missing-assets.md."
+      }
+    </p>
+    <a
+      href={profileHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-1 text-sm font-semibold text-pine underline decoration-signal underline-offset-4 hover:text-deep-pine"
+    >
+      View on The Blue Alliance &rarr;
+    </a>
+  </div>
+
+  <div data-tba-content class:list={["rounded-lg bg-mint p-6", !configured && "hidden"]}> </div>
+</div>
+
+<script define:vars={{ teamKey, authKey, year: import.meta.env.PUBLIC_TBA_YEAR, variant }}>
+  const TBA_BASE = "https://www.thebluealliance.com/api/v3";
+
+  async function tbaFetch(path) {
+    const res = await fetch(`${TBA_BASE}${path}`, {
+      headers: { "X-TBA-Auth-Key": authKey },
+    });
+    if (!res.ok) throw new Error(`TBA API ${path} responded ${res.status}`);
+    return res.json();
+  }
+
+  function computeRecord(matches, key) {
+    let wins = 0;
+    let losses = 0;
+    let ties = 0;
+    for (const m of matches) {
+      if (!m.winning_alliance && m.winning_alliance !== "") continue;
+      const isRed = m.alliances?.red?.team_keys?.includes(key);
+      const isBlue = m.alliances?.blue?.team_keys?.includes(key);
+      if (!isRed && !isBlue) continue;
+      if (m.winning_alliance === "") {
+        ties++;
+        continue;
+      }
+      const won = (isRed && m.winning_alliance === "red") || (isBlue && m.winning_alliance === "blue");
+      if (won) wins++;
+      else losses++;
+    }
+    return { wins, losses, ties };
+  }
+
+  function esc(str) {
+    const div = document.createElement("div");
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+
+  function renderTeaser(container, { record, events, awards }) {
+    container.innerHTML = `
+      <p class="text-3xl font-display font-bold text-deep-pine">${record.wins}-${record.losses}-${record.ties}</p>
+      <p class="text-sm text-deep-pine">Record across ${events.length} event${events.length === 1 ? "" : "s"} this season</p>
+      ${awards.length ? `<p class="mt-2 text-sm font-semibold text-pine">${awards.length} award${awards.length === 1 ? "" : "s"} won</p>` : ""}
+    `;
+  }
+
+  function renderFull(container, { record, events, awards }) {
+    const eventsList = events.length
+      ? events.map((e) => `<li>${esc(e.name)}</li>`).join("")
+      : "<li>No events yet this season.</li>";
+    const awardsList = awards.length
+      ? awards.map((a) => `<li>${esc(a.name)} — <span class="text-deep-pine">${esc(a.event_key)}</span></li>`).join("")
+      : "<li>No awards yet this season.</li>";
+    container.innerHTML = `
+      <p class="text-3xl font-display font-bold text-deep-pine">${record.wins}-${record.losses}-${record.ties}</p>
+      <p class="mb-4 text-sm text-deep-pine">Match record this season</p>
+      <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-pine">Events</p>
+      <ul class="list-inside list-disc text-sm text-deep-pine">${eventsList}</ul>
+      <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-pine">Awards</p>
+      <ul class="list-inside list-disc text-sm text-deep-pine">${awardsList}</ul>
+    `;
+  }
+
+  async function init() {
+    if (!teamKey || !authKey) return;
+
+    const widget = document.currentScript?.previousElementSibling;
+    const fallback = widget?.querySelector("[data-tba-fallback]");
+    const content = widget?.querySelector("[data-tba-content]");
+    if (!widget || !fallback || !content) return;
+
+    try {
+      const [events, matches, awards] = await Promise.all([
+        tbaFetch(`/team/${teamKey}/events/${year}/simple`),
+        tbaFetch(`/team/${teamKey}/matches/${year}/simple`),
+        tbaFetch(`/team/${teamKey}/awards/${year}`),
+      ]);
+      const record = computeRecord(matches, teamKey);
+      const render = variant === "teaser" ? renderTeaser : renderFull;
+      render(content, { record, events, awards });
+      content.classList.remove("hidden");
+      fallback.classList.add("hidden");
+    } catch (err) {
+      console.error("Blue Alliance widget failed to load:", err);
+    }
+  }
+
+  init();
+</script>

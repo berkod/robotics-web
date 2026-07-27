@@ -1,0 +1,68 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: robots
+    label: "Our Robots"
+    folder: "src/content/robots"
+    create: true
+    slug: "{{year}}"
+    fields:
+      - { label: "Season Year", name: "year", widget: "number", value_type: "int" }
+      - { label: "Robot Name", name: "name", widget: "string" }
+      - { label: "Photo", name: "photo", widget: "image" }
+      - label: "Spec Bullets (exactly 3)"
+        name: "bullets"
+        widget: "list"
+        min: 3
+        max: 3
+
+  - name: leadership
+    label: "Team Leadership"
+    folder: "src/content/leadership"
+    create: true
+    slug: "{{fields.name}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Student Leader", value: "student-leader" }
+          - { label: "Mentor", value: "mentor" }
+      - { label: "Sub-team", name: "subteam", widget: "string" }
+
+  - name: sponsors
+    label: "Sponsors"
+    folder: "src/content/sponsors"
+    create: true
+    slug: "{{fields.name}}"
+    fields:
+      - { label: "Sponsor Name", name: "name", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image" }
+      - label: "Tier"
+        name: "tier"
+        widget: "select"
+        options: ["Platinum", "Gold", "Silver", "Bronze"]
+      - { label: "Website Link", name: "link", widget: "string", required: false }
+
+  - name: pages
+    label: "Page Content"
+    files:
+      - label: "About Us & FIRST"
+        name: "about"
+        file: "src/content/pages/about.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Outreach & Impact"
+        name: "outreach"
+        file: "src/content/pages/outreach.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }

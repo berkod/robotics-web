@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /*
  * Pine & Circuit brand tokens — canonical source is design.md in
@@ -37,3 +38,10 @@ h4 {
 }
 
 /* Circuit Gold is a fill accent only — never a text color on white. See design.md. */
+
+.prose {
+  --tw-prose-headings: var(--pine);
+  --tw-prose-body: var(--deep-pine);
+  --tw-prose-bold: var(--deep-pine);
+  --tw-prose-links: var(--signal);
+}

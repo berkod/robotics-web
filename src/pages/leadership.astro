@@ -1,0 +1,65 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+const people = await getCollection("leadership");
+
+const categories = [
+  { key: "student-leader" as const, label: "Student Leaders" },
+  { key: "mentor" as const, label: "Mentors" },
+];
+
+function groupBySubteam(entries: typeof people) {
+  const subteams = [...new Set(entries.map((e) => e.data.subteam))];
+  return subteams.map((subteam) => ({
+    subteam,
+    members: entries.filter((e) => e.data.subteam === subteam),
+  }));
+}
+---
+
+<Layout
+  title="Team Leadership"
+  description="Lorem ipsum dolor sit amet — placeholder team leadership chart for the team's site."
+>
+  <section class="bg-pine text-white">
+    <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <h1 class="font-display text-4xl font-bold">Team Leadership</h1>
+      <p class="mt-3 max-w-2xl text-mint">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit — our student
+        leaders, mentors, and sub-teams.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="mx-auto flex max-w-6xl flex-col gap-14 px-4 py-14 sm:px-6">
+      {
+        categories.map(({ key, label }) => {
+          const inCategory = people.filter((p) => p.data.category === key);
+          const groups = groupBySubteam(inCategory);
+          return (
+            <div>
+              <h2 class="font-display text-2xl font-bold text-pine">{label}</h2>
+              <div class="mt-6 flex flex-col gap-8">
+                {groups.map(({ subteam, members }) => (
+                  <div>
+                    <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-signal">{subteam}</p>
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {members.map((person) => (
+                        <div class="rounded-lg bg-mint p-4">
+                          <p class="font-display font-semibold text-deep-pine">{person.data.name}</p>
+                          <p class="text-sm text-deep-pine">{person.data.role}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</Layout>

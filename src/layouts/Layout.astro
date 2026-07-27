@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import { TEAM_NAME } from "../lib/site";
 
 interface Props {
   title: string;
@@ -19,7 +20,7 @@ const { title, description = "Placeholder description — see missing-assets.md.
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <title>{title} · [Team Name] Robotics</title>
+    <title>{title} · {TEAM_NAME}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -40,7 +40,7 @@ Only these tasks are in scope for `/opsx:apply` right now. Phase 2 tasks below a
 
 ## 6. Handoff Docs
 
-- [x] 6.1 Rewrite the repo-root `claude.md` as a maintainer handoff doc: what's built so far (Phase 1 POC), where the plan lives (`openspec/changes/robotics-team-website/`), how to run the site locally, and what Phase 2 will add
+- [x] 6.1 Write the repo-root maintainer handoff doc (now `README.md`): what's built so far, where the plan lives (`openspec/changes/robotics-team-website/`), how to run the site locally, and what Phase 2 adds
 - [x] 6.2 Create `missing-assets.md` in this change directory listing every piece of real content/images still needed from the team before the Phase 2 content pass (logo file, real robot photos, sponsor logos per tier, leadership headshots if used, school address for the map, TBA team key + season year, Instagram handle, official contact email, About Us / Outreach copy)
 
 ## 7. Review Checkpoint
@@ -49,62 +49,64 @@ Only these tasks are in scope for `/opsx:apply` right now. Phase 2 tasks below a
 
 ---
 
-# Phase 2 — Full Build (deferred, not yet scoped for apply)
+# Phase 2 — Full Build
 
-Do not start these until Phase 1 is reviewed and approved. Revisit scope via `/opsx:continue` or `/opsx:update` first — the design may change based on POC feedback.
+Greenlit and mostly built. What's left is either a team action (Netlify
+dashboard toggles, third-party account signups) or real content — see the
+unchecked items below and `missing-assets.md`.
 
 ## 8. Content Collections & CMS
 
-- [ ] 8.1 Extend/replace the placeholder `robots` collection with its full Zod schema and migrate seeded entries
-- [ ] 8.2 Define the `leadership` Astro content collection with a Zod schema (name, role, category: student-leader | mentor, subteam)
-- [ ] 8.3 Define the `sponsors` Astro content collection with a Zod schema (name, logo, tier, optional link)
-- [ ] 8.4 Install and configure Decap CMS at `/admin`, with one collection config matching each schema above
-- [ ] 8.5 Set up Netlify Identity + Git Gateway for CMS authentication — follow `deploy.md` Part 2
-- [ ] 8.6 Verify the CMS admin login → edit → publish loop end-to-end
+- [x] 8.1 Extend/replace the placeholder `robots` collection with its full Zod schema and migrate seeded entries
+- [x] 8.2 Define the `leadership` Astro content collection with a Zod schema (name, role, category: student-leader | mentor, subteam)
+- [x] 8.3 Define the `sponsors` Astro content collection with a Zod schema (name, logo, tier, optional link)
+- [x] 8.4 Install and configure Decap CMS at `/admin`, with one collection config matching each schema above
+- [ ] 8.5 Set up Netlify Identity + Git Gateway for CMS authentication — code side is done (`public/admin/`); the dashboard toggle itself is a Netlify-account action, follow `deploy.md` Part 2
+- [ ] 8.6 Verify the CMS admin login → edit → publish loop end-to-end — blocked on 8.5
 
 ## 9. Remaining Informational Pages
 
-- [ ] 9.1 Build the About Us & FIRST page (team mission/history + plain-language FIRST explanation)
-- [ ] 9.2 Build the Outreach & Impact page (community work + school demos summary, CMS-editable copy)
-- [ ] 9.3 Replace homepage teaser "coming soon" states with real links now that the pages exist
+- [x] 9.1 Build the About Us & FIRST page (team mission/history + plain-language FIRST explanation)
+- [x] 9.2 Build the Outreach & Impact page (community work + school demos summary, CMS-editable copy)
+- [x] 9.3 Replace homepage teaser "coming soon" states with real links now that the pages exist
 
 ## 10. Team Leadership Page
 
-- [ ] 10.1 Build the leadership chart component grouped by category (student leaders, mentors) and sub-team
-- [ ] 10.2 Ensure empty sub-teams are omitted from rendering
-- [ ] 10.3 Wire the page to the `leadership` content collection
+- [x] 10.1 Build the leadership chart component grouped by category (student leaders, mentors) and sub-team
+- [x] 10.2 Ensure empty sub-teams are omitted from rendering
+- [x] 10.3 Wire the page to the `leadership` content collection
 
 ## 11. Sponsors Page
 
-- [ ] 11.1 Define the sponsorship tier ordering (e.g. Platinum > Gold > Silver > Bronze) used for schema validation and display order
-- [ ] 11.2 Build the full tiered logo grid page, grouped and ordered by tier, higher tiers more prominent
-- [ ] 11.3 Make sponsor logos with a configured link open the sponsor's site in a new tab
-- [ ] 11.4 Wire the page to the `sponsors` content collection
+- [x] 11.1 Define the sponsorship tier ordering (e.g. Platinum > Gold > Silver > Bronze) used for schema validation and display order
+- [x] 11.2 Build the full tiered logo grid page, grouped and ordered by tier, higher tiers more prominent
+- [x] 11.3 Make sponsor logos with a configured link open the sponsor's site in a new tab
+- [x] 11.4 Wire the page to the `sponsors` content collection
 
 ## 12. Join / Contact Us Page
 
-- [ ] 12.1 Build the contact page with school name and official team email as visible, clickable (`mailto:`) text
-- [ ] 12.2 Embed a Google Map iframe centered on the school's address
-- [ ] 12.3 Verify the map is interactive (pannable/zoomable) and responsive on mobile
+- [x] 12.1 Build the contact page with school name and official team email as visible, clickable (`mailto:`) text
+- [x] 12.2 Embed a Google Map iframe centered on the school's address
+- [x] 12.3 Verify the map is interactive (pannable/zoomable) and responsive on mobile
 
 ## 13. The Blue Alliance Widget (live)
 
-- [ ] 13.1 Obtain the team's TBA team key and a TBA Read API v3 key
-- [ ] 13.2 Build a client-side Astro island that fetches team events, matches, and awards from the TBA API, replacing the Phase 1 static placeholder
-- [ ] 13.3 Default the widget to the current competition season
-- [ ] 13.4 Add a graceful fallback (friendly message + link to the team's TBA profile) when the API request fails or times out
-- [ ] 13.5 Place the full widget on its own section/page and a condensed teaser version on the homepage
+- [ ] 13.1 Obtain the team's TBA team key and a TBA Read API v3 key — team key is known (`frc10262`, in `.env.example`); the Read API key itself needs the team's TBA account, see `missing-assets.md`
+- [x] 13.2 Build a client-side Astro island that fetches team events, matches, and awards from the TBA API, replacing the Phase 1 static placeholder
+- [x] 13.3 Default the widget to the current competition season (via `PUBLIC_TBA_YEAR`)
+- [x] 13.4 Add a graceful fallback (friendly message + link to the team's TBA profile) when the API request fails or times out
+- [x] 13.5 Place the full widget on its own section/page and a condensed teaser version on the homepage
 
 ## 14. Social Media Feed (live)
 
-- [ ] 14.1 Choose and set up a third-party Instagram embed widget provider (e.g. SnapWidget or LightWidget)
-- [ ] 14.2 Replace the Phase 1 static placeholder with the auto-refreshing Instagram grid on the homepage
-- [ ] 14.3 Add a "follow us" link from the grid to the team's Instagram profile
-- [ ] 14.4 Add a graceful fallback (hidden section or static profile link) if the embed fails to load
+- [ ] 14.1 Choose and set up a third-party Instagram embed widget provider (e.g. SnapWidget or LightWidget) — this is a team action (signing up for a third-party account); the component is ready to receive the resulting embed URL
+- [x] 14.2 Homepage grid component built (env-driven via `PUBLIC_INSTAGRAM_EMBED_URL`) — shows its graceful fallback until 14.1 is done and the URL is set
+- [x] 14.3 Add a "follow us" link from the grid to the team's Instagram profile
+- [x] 14.4 Add a graceful fallback (hidden section or static profile link) if the embed fails to load
 
 ## 15. Content Pass, Docs & Launch
 
 - [ ] 15.1 Replace all placeholder content with real leadership, robot history, sponsor logos, and outreach copy via the CMS, using `missing-assets.md` as the checklist
-- [ ] 15.2 Update `claude.md` with the finished CMS login steps, sponsor tier update process, and TBA/season rotation instructions
+- [x] 15.2 Update `README.md` with the finished CMS login steps, sponsor tier update process, and TBA/season rotation instructions
 - [ ] 15.3 Point the team's domain (or a free `*.netlify.app` subdomain) at the Netlify site and verify SSL
 - [ ] 15.4 Run a final cross-device check (mobile/tablet/desktop) and Lighthouse pass on all core pages

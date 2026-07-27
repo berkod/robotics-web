@@ -3,14 +3,14 @@
 This happens in two parts, matching the Phase 1 / Phase 2 split in
 `openspec/changes/robotics-team-website/design.md`:
 
-- **Part 1 (do this now):** get the Phase 1 POC live on a public URL for
-  design review. Plain static hosting, no login, no CMS.
-- **Part 2 (do this later, after the POC is reviewed and Decap CMS is
-  installed — `tasks.md` section 8):** add Netlify Identity + Git Gateway so
-  non-technical editors can log into `/admin`.
+- **Part 1:** get the site live on a public URL. Plain static hosting, no
+  login required to view it.
+- **Part 2:** add Netlify Identity + Git Gateway so non-technical editors can
+  log into `/admin` and use the Decap CMS that's already built into the
+  codebase.
 
-Don't do Part 2 yet — there's nothing for it to authenticate into until the
-CMS exists.
+You can do Part 1 on its own first (e.g. for the Phase 1 design review) and
+come back for Part 2 later — nothing breaks by deferring it.
 
 ## Prerequisites
 
@@ -73,21 +73,27 @@ Once the team has a domain to point at the site:
 3. Netlify auto-provisions a free SSL certificate once DNS propagates (can
    take a few minutes to a few hours).
 
-## Part 2: CMS auth (Phase 2 — do this later)
+## Part 2: CMS auth
 
-Only relevant once Decap CMS is installed in the codebase. Not needed for
-the POC.
+The codebase already has Decap CMS wired up at `/admin` (`public/admin/index.html`
++ `config.yml`), configured for **invite-only** registration — the Identity
+widget is only loaded on the admin page itself, not the public site, so
+there's nothing for the wider public to stumble into.
 
 1. **Site configuration → Identity → Enable Identity**.
-2. **Identity → Registration** → set to **Invite only**, so random visitors
-   can't create accounts.
+2. **Identity → Registration** → set to **Invite only**.
 3. **Identity → Services → enable Git Gateway** — this lets Identity-
    authenticated users commit content changes through Netlify without each
    person needing their own GitHub account or token.
-4. **Identity → Invite users** → send an invite to each mentor/student who
+4. **Identity → Emails** → edit the invitation/confirmation templates and
+   change the link from `{{ siteURL }}/#...` to `{{ siteURL }}/admin/#...`
+   (invite-only setups need this so the email link lands on the CMS, not the
+   public homepage — see [Decap's Netlify Identity guide](https://decapcms.org/docs/choosing-a-backend/)).
+5. **Identity → Invite users** → send an invite to each mentor/student who
    should be able to edit content.
-5. Once Decap CMS's `/admin` route exists, invited users log in at
-   `https://<your-site>/admin` with the email/password from their invite.
+6. Invited users log in at `https://<your-site>/admin` with the
+   email/password from their invite, and see a form-based editor for Our
+   Robots, Team Leadership, Sponsors, and the About/Outreach page copy.
 
 ## Rolling back a bad deploy
 
@@ -97,7 +103,20 @@ instantly — no code changes or git history rewrite required.
 
 ## Environment variables
 
-None needed yet. The POC makes no external API calls and has no secrets.
-When Phase 2 adds the Blue Alliance widget, the team's TBA API key goes in
-**Site configuration → Environment variables** — never commit it to the
-repo.
+The Blue Alliance widget and Instagram feed both degrade gracefully to a
+"not connected yet" state until these are set. Add them in **Site
+configuration → Environment variables**, then trigger a new deploy (env
+vars only take effect on the next build) — never commit them to the repo.
+See `missing-assets.md` for where to get each value.
+
+| Variable | Purpose |
+|---|---|
+| `PUBLIC_TBA_AUTH_KEY` | TBA Read API key, from your TBA account's dashboard |
+| `PUBLIC_TBA_TEAM_KEY` | The team's TBA key, e.g. `frc10262` |
+| `PUBLIC_TBA_YEAR` | Competition season year to show, e.g. `2026` |
+| `PUBLIC_INSTAGRAM_EMBED_URL` | Embed URL from a widget provider (e.g. SnapWidget) — see `design.md` Decision 5 |
+
+All of these are prefixed `PUBLIC_` because Astro only exposes `PUBLIC_`-prefixed
+env vars to client-side code — that's intentional here, not an oversight:
+the TBA read key and Instagram embed URL are meant to be public (see
+`design.md`'s Risks section for why that's fine for the TBA key).

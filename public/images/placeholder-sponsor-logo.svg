@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 140" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder sponsor logo</title>
+  <desc id="desc">A placeholder graphic standing in for a real sponsor logo</desc>
+  <rect width="320" height="140" fill="#FFFFFF"/>
+  <rect x="1" y="1" width="318" height="138" fill="none" stroke="#00482B" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="160" y="76" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="700" fill="#00482B">SPONSOR LOGO</text>
+</svg>

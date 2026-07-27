@@ -9,7 +9,7 @@ Constraints:
 
 ## Brand & Color System — "Pine & Circuit"
 
-This is the canonical source for the palette (moved here from the repo root doc, which is now the maintainer handoff document — see `claude.md`).
+This is the canonical source for the palette (originally lived in the repo root doc; the maintainer handoff content that doc grew into now lives in `README.md`).
 
 | Role | Name | Hex | RGB | Use for |
 |---|---|---|---|---|
@@ -60,7 +60,7 @@ The full capability set in `proposal.md` and `specs/` describes the target end s
 - No CMS: content lives in local placeholder data (e.g. static Astro content collection entries), not wired to Decap CMS or Netlify Identity.
 - The Blue Alliance widget and Instagram grid are **static visual stubs** (styled placeholder blocks in their final position/size) — no live API calls.
 - WCAG AA contrast still applies in full — the palette isn't optional just because the copy is.
-- Deliverables beyond code: this design.md update (palette + phasing), a rewritten `claude.md` maintainer handoff doc, and a `missing-assets.md` list of real content/images still needed from the team.
+- Deliverables beyond code: this design.md update (palette + phasing), a maintainer handoff doc (now `README.md`), and a `missing-assets.md` list of real content/images still needed from the team.
 
 **Phase 2 — Full build (future pass, not scheduled here):**
 - Remaining pages: About Us & FIRST, Team Leadership, Outreach & Impact, Sponsors, Join/Contact Us.
@@ -115,7 +115,7 @@ This is a new build, not a migration of an existing site — the "rollback strat
 3. Build the Homepage and Our Robots page with Lorem Ipsum copy and static placeholder data (no CMS yet).
 4. Add static styled placeholders for the TBA widget and Instagram grid in their final positions.
 5. Deploy to Netlify (no Identity/Git Gateway yet) for review.
-6. Rewrite `claude.md` as the maintainer handoff doc and write `missing-assets.md`.
+6. Write the maintainer handoff doc (`README.md`) and `missing-assets.md`.
 
 **Phase 2 (future pass, after design review):**
 7. Define the `leadership`, `robots`, `sponsors` content collections and matching Decap CMS config; migrate the POC's placeholder Our Robots data into the real collection.

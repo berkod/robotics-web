@@ -1,9 +1,11 @@
 ---
-// Contact/social values are placeholders — see missing-assets.md.
-const contactEmail = "team@example.org";
+import { CONTACT_EMAIL, BLUE_ALLIANCE_TEAM_PAGE, INSTAGRAM_LINK } from "../lib/site";
+
+// Social links are placeholders — see missing-assets.md.
+const contactEmail = CONTACT_EMAIL;
 const socialLinks = [
-  { label: "The Blue Alliance", href: "#" },
-  { label: "Instagram", href: "#" },
+  { label: "The Blue Alliance", href: BLUE_ALLIANCE_TEAM_PAGE },
+  { label: "Instagram", href: INSTAGRAM_LINK },
 ];
 ---
 
@@ -21,7 +23,12 @@ const socialLinks = [
       {
         socialLinks.map((link) => (
           <li>
-            <a href={link.href} class="hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold">
+            <a
+              href={link.href}
+              target="_blank"
+              rel="external noopener noreferrer"
+              class="hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            >
               {link.label}
             </a>
           </li>

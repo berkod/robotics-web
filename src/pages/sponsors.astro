@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { SPONSOR_TIERS } from "../lib/sponsorTiers";
+
+const sponsors = await getCollection("sponsors");
+
+const tierSizes: Record<(typeof SPONSOR_TIERS)[number], string> = {
+  Platinum: "h-28 w-56",
+  Gold: "h-24 w-48",
+  Silver: "h-20 w-40",
+  Bronze: "h-16 w-32",
+};
+
+const groups = SPONSOR_TIERS.map((tier) => ({
+  tier,
+  members: sponsors.filter((s) => s.data.tier === tier),
+})).filter((group) => group.members.length > 0);
+---
+
+<Layout
+  title="Sponsors"
+  description="Lorem ipsum dolor sit amet — placeholder sponsors page for the team's site."
+>
+  <section class="bg-pine text-white">
+    <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <h1 class="font-display text-4xl font-bold">Our Sponsors</h1>
+      <p class="mt-3 max-w-2xl text-mint">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit — our team
+        wouldn't be possible without the generous support of these sponsors.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-14 sm:px-6">
+      {
+        groups.map(({ tier, members }) => (
+          <div>
+            <h2 class="font-display text-xl font-bold text-pine">{tier} Tier</h2>
+            <div class="mt-5 flex flex-wrap items-center gap-6">
+              {members.map((sponsor) => {
+                const logo = (
+                  <img
+                    src={sponsor.data.logo}
+                    alt={sponsor.data.name}
+                    class={`${tierSizes[sponsor.data.tier]} rounded-md object-contain ring-1 ring-pine/10`}
+                  />
+                );
+                return sponsor.data.link ? (
+                  <a
+                    href={sponsor.data.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="rounded-md transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+                    aria-label={`${sponsor.data.name} (opens in a new tab)`}
+                  >
+                    {logo}
+                  </a>
+                ) : (
+                  logo
+                );
+              })}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

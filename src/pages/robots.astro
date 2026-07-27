@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import BlueAllianceWidget from "../components/BlueAllianceWidget.astro";
 
 const robots = (await getCollection("robots")).sort((a, b) => b.data.year - a.data.year);
 const [currentYear] = robots.map((r) => r.data.year);
@@ -46,14 +47,14 @@ const [currentYear] = robots.map((r) => r.data.year);
                   )}
                 </div>
                 <div class="flex flex-1 flex-col gap-3 p-5">
-                  <span class="text-sm font-semibold uppercase tracking-wide text-signal">
+                  <span class="text-sm font-semibold uppercase tracking-wide text-pine">
                     {robot.data.year}
                   </span>
                   <h2 class="font-display text-xl font-bold text-deep-pine">{robot.data.name}</h2>
                   <ul class="flex flex-col gap-2 text-sm text-deep-pine">
                     {robot.data.bullets.map((bullet) => (
                       <li class="flex gap-2">
-                        <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true" />
+                        <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-pine" aria-hidden="true" />
                         <span>{bullet}</span>
                       </li>
                     ))}
@@ -63,6 +64,18 @@ const [currentYear] = robots.map((r) => r.data.year);
             );
           })
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <h2 class="font-display text-2xl font-bold text-pine">Match Results &amp; Awards</h2>
+      <p class="mt-2 max-w-2xl text-sm text-deep-pine">
+        Pulled automatically from The Blue Alliance — no manual updates needed.
+      </p>
+      <div class="mt-6 max-w-md">
+        <BlueAllianceWidget variant="full" />
       </div>
     </div>
   </section>
