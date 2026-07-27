@@ -52,7 +52,7 @@ const [currentYear] = robots.map((r) => r.data.year);
                   </span>
                   <h2 class="font-display text-xl font-bold text-deep-pine">{robot.data.name}</h2>
                   <ul class="flex flex-col gap-2 text-sm text-deep-pine">
-                    {robot.data.bullets.map((bullet) => (
+                    {robot.data.bullets.map(({ bullet }) => (
                       <li class="flex gap-2">
                         <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-pine" aria-hidden="true" />
                         <span>{bullet}</span>

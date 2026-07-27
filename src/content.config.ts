@@ -9,7 +9,7 @@ const robots = defineCollection({
     year: z.number(),
     name: z.string(),
     photo: z.string(),
-    bullets: z.array(z.string()).length(3),
+    bullets: z.array(z.object({ bullet: z.string() })).length(3),
   }),
 });
 
@@ -29,7 +29,9 @@ const sponsors = defineCollection({
     name: z.string(),
     logo: z.string(),
     tier: z.enum(SPONSOR_TIERS),
-    link: z.string().url().optional(),
+    // Decap writes "" (not undefined) when an existing link is cleared in
+    // the CMS, rather than never filled in — accept both as "no link".
+    link: z.string().url().optional().or(z.literal("")),
   }),
 });
 

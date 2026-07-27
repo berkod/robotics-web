@@ -96,7 +96,7 @@ const pageTeasers = [
         </h2>
         <ul class="flex flex-col gap-2 text-deep-pine">
           {
-            currentRobot.data.bullets.map((bullet) => (
+            currentRobot.data.bullets.map(({ bullet }) => (
               <li class="flex gap-2">
                 <span class="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-pine" aria-hidden="true" />
                 <span>{bullet}</span>
