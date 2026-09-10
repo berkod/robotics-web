@@ -12,14 +12,22 @@ const robots = defineCollection({
   }),
 });
 
+// Student leaders and mentors are separate collections so each gets its own
+// CMS edit interface, rather than one list split by a category dropdown.
+const person = z.object({
+  name: z.string(),
+  role: z.string(),
+  subteam: z.string(),
+});
+
 const leadership = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/leadership" }),
-  schema: z.object({
-    name: z.string(),
-    role: z.string(),
-    category: z.enum(["student-leader", "mentor"]),
-    subteam: z.string(),
-  }),
+  schema: person,
+});
+
+const mentors = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/mentors" }),
+  schema: person,
 });
 
 const sponsors = defineCollection({
@@ -40,4 +48,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { robots, leadership, sponsors, pages };
+export const collections = { robots, leadership, mentors, sponsors, pages };

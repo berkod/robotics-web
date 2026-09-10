@@ -22,6 +22,7 @@ Real:
 Still placeholder (see `missing-assets.md` for the full list):
 - Logo file (currently a generated gear-emoji wordmark)
 - Official contact email (`hastingsrobotics2025@gmail.com` in `src/lib/site.ts`)
+- Official contact email (`hastingsrobotics2025@gmail.com` in `src/lib/site.ts`)
 - Robot names/photos/specs, leadership roster, sponsor list — all seeded with
   Lorem Ipsum entries in `src/content/`
 - Live data: the Blue Alliance widget and Instagram grid both render their
@@ -55,7 +56,8 @@ npm run preview   # serve the production build locally
 (e.g. running the dev server in the background).
 
 To edit content locally without the CMS, edit the markdown files under
-`src/content/` directly (`robots/`, `leadership/`, `sponsors/`, `pages/`) —
+`src/content/` directly (`robots/`, `leadership/`, `mentors/`, `sponsors/`,
+`pages/`) —
 the CMS is just a friendlier form-based editor over the same files.
 
 ## Deploying
@@ -95,8 +97,8 @@ public/
 ## Editing content via the CMS
 
 Once Netlify Identity + Git Gateway are enabled (`deploy.md` Part 2) and
-you're invited as an editor, log into `/admin` to edit Our Robots, Team
-Leadership, Sponsors, and the About/Outreach page copy through a form —
+you're invited as an editor, log into `/admin` to edit Our Robots, Student
+Leaders, Mentors, Sponsors, and the About/Outreach page copy through a form —
 no code required. Each save commits directly to this repo and triggers a
 redeploy.
 
