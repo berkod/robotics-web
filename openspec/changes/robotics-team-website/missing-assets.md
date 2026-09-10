@@ -15,12 +15,12 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 
 ## Robots
 
-- [ ] Real name for each season's robot (currently "Robot 2024/2025/2026
+- [ ] Real name for each season's robot (currently "Robot 2025/2026
       (placeholder name)" in `src/content/robots/*.md`)
 - [ ] Real photo for each season's robot (currently
-      `public/images/placeholder-robot.svg` for all three)
+      `public/images/placeholder-robot.svg` for both)
 - [ ] Three real spec bullets per robot (currently Lorem Ipsum sentences)
-- [ ] Confirm whether older seasons beyond 2024–2026 should be included
+- [ ] Confirm whether older seasons beyond 2025–2026 should be included
 
 ## Team Leadership
 
