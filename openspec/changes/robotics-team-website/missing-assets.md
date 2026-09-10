@@ -24,8 +24,12 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 
 ## Team Leadership
 
-- [ ] List of current student leaders, mentors, and sub-teams, with names and
-      roles (currently 6 placeholder entries in `src/content/leadership/`)
+- [x] Student leadership roles and sub-teams — confirmed by the team:
+      2 co-presidents, 1 mechanical head, 1 electrical head, 2 programming
+      heads, 2 outreach leads, 2 social media heads, 1 business head
+- [ ] The name of the student filling each of those 11 roles (entries in
+      `src/content/leadership/` still carry placeholder names)
+- [ ] Mentor list, with names and roles (currently 3 placeholder entries)
 - [ ] Headshots, if the team wants photos on the leadership chart (optional —
       not in any spec requirement, confirm if wanted)
 

@@ -9,11 +9,32 @@ const categories = [
   { key: "mentor" as const, label: "Mentors" },
 ];
 
+// Display order for sub-teams. Anything not listed (e.g. a sub-team added via
+// the CMS) sorts to the end alphabetically rather than disappearing.
+const SUBTEAM_ORDER = [
+  "Team Leadership",
+  "Mechanical",
+  "Electrical",
+  "Programming",
+  "Outreach",
+  "Social Media",
+  "Business",
+];
+
+function subteamRank(subteam: string) {
+  const i = SUBTEAM_ORDER.indexOf(subteam);
+  return i === -1 ? SUBTEAM_ORDER.length : i;
+}
+
 function groupBySubteam(entries: typeof people) {
-  const subteams = [...new Set(entries.map((e) => e.data.subteam))];
+  const subteams = [...new Set(entries.map((e) => e.data.subteam))].sort(
+    (a, b) => subteamRank(a) - subteamRank(b) || a.localeCompare(b),
+  );
   return subteams.map((subteam) => ({
     subteam,
-    members: entries.filter((e) => e.data.subteam === subteam),
+    members: entries
+      .filter((e) => e.data.subteam === subteam)
+      .sort((a, b) => a.data.name.localeCompare(b.data.name)),
   }));
 }
 ---
