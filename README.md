@@ -13,7 +13,7 @@ still outstanding, and `tasks.md` for the full checklist.
 ## What's real vs. placeholder right now
 
 Real:
-- Team name: Hastings-on-Hudson Bionic Buzzers Robotics, team #10262
+- Team name: Bionic Buzzers, team #10262
   (`src/lib/site.ts`)
 - School: Hastings High School, address in `src/lib/site.ts`
 - TBA team: `frc10262` (link in `src/lib/site.ts`)

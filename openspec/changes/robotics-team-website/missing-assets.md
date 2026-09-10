@@ -6,7 +6,7 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 
 ## Identity
 
-- [x] Official team name — **Hastings-on-Hudson Bionic Buzzers Robotics**,
+- [x] Official team name — **Bionic Buzzers**,
       team #10262 (`src/lib/site.ts`)
 - [ ] Final logo file (vector, e.g. SVG/AI) — currently a generated gear-emoji
       wordmark placeholder in `src/components/Logo.astro`

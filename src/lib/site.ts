@@ -1,5 +1,5 @@
 // Placeholder values — see missing-assets.md for what the team needs to supply.
-export const TEAM_NAME = "Hastings-on-Hudson Bionic Buzzers Robotics";
+export const TEAM_NAME = "Bionic Buzzers";
 export const TEAM_NUMBER = "10262";
 export const SCHOOL_NAME = "Hastings High School";
 export const CONTACT_EMAIL = "team@example.org";
