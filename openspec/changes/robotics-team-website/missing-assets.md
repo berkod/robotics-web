@@ -31,8 +31,8 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
       `src/content/leadership/` still carry placeholder names)
 - [x] Mentor count — confirmed by the team: 2 mentors
 - [ ] Mentor names, and confirmation of each mentor's role and sub-team
-      (currently 2 placeholder entries: Lead Mentor / Mechanical and
-      Programming Mentor / Programming)
+      (currently 2 placeholder entries in `src/content/mentors/`: Lead Mentor /
+      Mechanical and Programming Mentor / Programming)
 - [ ] Headshots, if the team wants photos on the leadership chart (optional —
       not in any spec requirement, confirm if wanted)
 
@@ -58,7 +58,7 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
       (`src/lib/site.ts`)
 - [x] School's street address, for the embedded Google Map — **One Mount
       Hope Blvd. Hastings-on-Hudson, NY 10706** (`src/lib/site.ts`)
-- [ ] Official team contact email (currently `team@example.org` placeholder
+- [ ] Official team contact email (currently `hastingsrobotics2025@gmail.com` placeholder
       in `src/lib/site.ts`)
 
 ## Integrations

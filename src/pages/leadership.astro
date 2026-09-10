@@ -2,12 +2,13 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 
-const people = await getCollection("leadership");
-
-const categories = [
-  { key: "student-leader" as const, label: "Student Leaders" },
-  { key: "mentor" as const, label: "Mentors" },
+// Two collections, each with its own CMS edit interface.
+const sections = [
+  { label: "Student Leaders", people: await getCollection("leadership") },
+  { label: "Mentors", people: await getCollection("mentors") },
 ];
+
+type Person = { data: { name: string; role: string; subteam: string } };
 
 // Display order for sub-teams. Anything not listed (e.g. a sub-team added via
 // the CMS) sorts to the end alphabetically rather than disappearing.
@@ -26,7 +27,7 @@ function subteamRank(subteam: string) {
   return i === -1 ? SUBTEAM_ORDER.length : i;
 }
 
-function groupBySubteam(entries: typeof people) {
+function groupBySubteam(entries: Person[]) {
   const subteams = [...new Set(entries.map((e) => e.data.subteam))].sort(
     (a, b) => subteamRank(a) - subteamRank(b) || a.localeCompare(b),
   );
@@ -56,9 +57,8 @@ function groupBySubteam(entries: typeof people) {
   <section class="bg-white">
     <div class="mx-auto flex max-w-6xl flex-col gap-14 px-4 py-14 sm:px-6">
       {
-        categories.map(({ key, label }) => {
-          const inCategory = people.filter((p) => p.data.category === key);
-          const groups = groupBySubteam(inCategory);
+        sections.map(({ label, people }) => {
+          const groups = groupBySubteam(people);
           return (
             <div>
               <h2 class="font-display text-2xl font-bold text-pine">{label}</h2>

@@ -23,19 +23,25 @@ collections:
         max: 3
 
   - name: leadership
-    label: "Team Leadership"
+    label: "Student Leaders"
+    label_singular: "Student Leader"
     folder: "src/content/leadership"
     create: true
     slug: "{{fields.name}}"
     fields:
       - { label: "Name", name: "name", widget: "string" }
       - { label: "Role", name: "role", widget: "string" }
-      - label: "Category"
-        name: "category"
-        widget: "select"
-        options:
-          - { label: "Student Leader", value: "student-leader" }
-          - { label: "Mentor", value: "mentor" }
+      - { label: "Sub-team", name: "subteam", widget: "string" }
+
+  - name: mentors
+    label: "Mentors"
+    label_singular: "Mentor"
+    folder: "src/content/mentors"
+    create: true
+    slug: "{{fields.name}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
       - { label: "Sub-team", name: "subteam", widget: "string" }
 
   - name: sponsors
