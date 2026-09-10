@@ -1,7 +1,6 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
-import { SPONSOR_TIERS } from "./lib/sponsorTiers";
 
 const robots = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/robots" }),
@@ -28,7 +27,6 @@ const sponsors = defineCollection({
   schema: z.object({
     name: z.string(),
     logo: z.string(),
-    tier: z.enum(SPONSOR_TIERS),
     // Decap writes "" (not undefined) when an existing link is cleared in
     // the CMS, rather than never filled in — accept both as "no link".
     link: z.string().url().optional().or(z.literal("")),

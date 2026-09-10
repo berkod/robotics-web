@@ -15,25 +15,32 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 
 ## Robots
 
-- [ ] Real name for each season's robot (currently "Robot 2024/2025/2026
+- [ ] Real name for each season's robot (currently "Robot 2025/2026
       (placeholder name)" in `src/content/robots/*.md`)
 - [ ] Real photo for each season's robot (currently
-      `public/images/placeholder-robot.svg` for all three)
+      `public/images/placeholder-robot.svg` for both)
 - [ ] Three real spec bullets per robot (currently Lorem Ipsum sentences)
-- [ ] Confirm whether older seasons beyond 2024–2026 should be included
+- [ ] Confirm whether older seasons beyond 2025–2026 should be included
 
 ## Team Leadership
 
-- [ ] List of current student leaders, mentors, and sub-teams, with names and
-      roles (currently 6 placeholder entries in `src/content/leadership/`)
+- [x] Student leadership roles and sub-teams — confirmed by the team:
+      2 co-presidents, 1 mechanical head, 1 electrical head, 2 programming
+      heads, 2 outreach leads, 2 social media heads, 1 business head
+- [ ] The name of the student filling each of those 11 roles (entries in
+      `src/content/leadership/` still carry placeholder names)
+- [x] Mentor count — confirmed by the team: 2 mentors
+- [ ] Mentor names, and confirmation of each mentor's role and sub-team
+      (currently 2 placeholder entries: Lead Mentor / Mechanical and
+      Programming Mentor / Programming)
 - [ ] Headshots, if the team wants photos on the leadership chart (optional —
       not in any spec requirement, confirm if wanted)
 
 ## Sponsors
 
-- [ ] Current sponsor list grouped by tier — currently 8 placeholder entries
-      in `src/content/sponsors/` using Platinum/Gold/Silver/Bronze; confirm
-      these are the team's actual tier names
+- [ ] Current sponsor list — currently 8 placeholder entries in
+      `src/content/sponsors/`. The team does not use sponsorship tiers, so
+      every sponsor renders at the same size.
 - [ ] Sponsor logo files (vector or high-res raster) for each sponsor
 - [ ] Sponsor website links, where applicable
 
@@ -51,7 +58,7 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
       (`src/lib/site.ts`)
 - [x] School's street address, for the embedded Google Map — **One Mount
       Hope Blvd. Hastings-on-Hudson, NY 10706** (`src/lib/site.ts`)
-- [ ] Official team contact email (currently `team@example.org` placeholder
+- [ ] Official team contact email (currently `hastingsrobotics2025@gmail.com` placeholder
       in `src/lib/site.ts`)
 
 ## Integrations
