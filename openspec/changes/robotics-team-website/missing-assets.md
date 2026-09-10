@@ -58,7 +58,7 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
       (`src/lib/site.ts`)
 - [x] School's street address, for the embedded Google Map — **One Mount
       Hope Blvd. Hastings-on-Hudson, NY 10706** (`src/lib/site.ts`)
-- [ ] Official team contact email (currently `hastingsrobotics2025@gmail.com` placeholder
+- [x] Official team contact email (currently `hastingsrobotics2025@gmail.com` placeholder
       in `src/lib/site.ts`)
 
 ## Integrations
