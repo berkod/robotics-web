@@ -29,7 +29,10 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
       heads, 2 outreach leads, 2 social media heads, 1 business head
 - [ ] The name of the student filling each of those 11 roles (entries in
       `src/content/leadership/` still carry placeholder names)
-- [ ] Mentor list, with names and roles (currently 3 placeholder entries)
+- [x] Mentor count — confirmed by the team: 2 mentors
+- [ ] Mentor names, and confirmation of each mentor's role and sub-team
+      (currently 2 placeholder entries: Lead Mentor / Mechanical and
+      Programming Mentor / Programming)
 - [ ] Headshots, if the team wants photos on the leadership chart (optional —
       not in any spec requirement, confirm if wanted)
 
