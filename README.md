@@ -82,7 +82,7 @@ see `deploy.md`'s Environment variables section for details:
 src/
   components/   Nav, Footer, Logo, BlueAllianceWidget, InstagramFeed, page-teaser cards
   layouts/      Layout.astro — shared page shell (nav + slot + footer)
-  lib/          site.ts (contact/school/social constants), sponsorTiers.ts
+  lib/          site.ts (contact/school/social constants)
   content/      Content collections: robots, leadership, sponsors, pages (About/Outreach body copy)
   content.config.ts   Content collection schemas (Zod)
   pages/        index, about, leadership, robots, outreach, sponsors, contact
@@ -100,7 +100,7 @@ Leadership, Sponsors, and the About/Outreach page copy through a form —
 no code required. Each save commits directly to this repo and triggers a
 redeploy.
 
-To add next season's robot, update sponsor tiers, or rotate the TBA
+To add next season's robot, update the sponsor list, or rotate the TBA
 year: do it through `/admin`, or edit the corresponding file under
 `src/content/` directly and commit — both end up in the same place.
 

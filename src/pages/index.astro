@@ -4,17 +4,14 @@ import Layout from "../layouts/Layout.astro";
 import PageTeaserCard from "../components/PageTeaserCard.astro";
 import BlueAllianceWidget from "../components/BlueAllianceWidget.astro";
 import InstagramFeed from "../components/InstagramFeed.astro";
-import { SPONSOR_TIERS } from "../lib/sponsorTiers";
 import { TEAM_NAME, TEAM_NUMBER } from "../lib/site";
 
 const robots = await getCollection("robots");
 const currentRobot = robots.sort((a, b) => b.data.year - a.data.year)[0];
 
-const sponsors = await getCollection("sponsors");
-const sponsorGroups = SPONSOR_TIERS.map((tier) => ({
-  tier,
-  members: sponsors.filter((s) => s.data.tier === tier),
-})).filter((group) => group.members.length > 0);
+const sponsors = (await getCollection("sponsors")).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
 
 const pageTeasers = [
   {
@@ -129,21 +126,14 @@ const pageTeasers = [
       <p class="mt-2 max-w-2xl text-sm text-deep-pine">
         Lorem ipsum dolor sit amet — our team wouldn't be possible without these sponsors.
       </p>
-      <div class="mt-8 flex flex-col gap-8">
+      <div class="mt-8 flex flex-wrap items-center gap-4">
         {
-          sponsorGroups.map(({ tier, members }) => (
-            <div>
-              <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-pine">{tier} Tier</p>
-              <div class="flex flex-wrap items-center gap-4">
-                {members.map((sponsor) => (
-                  <img
-                    src={sponsor.data.logo}
-                    alt={sponsor.data.name}
-                    class="h-16 w-32 rounded-md object-contain ring-1 ring-pine/10"
-                  />
-                ))}
-              </div>
-            </div>
+          sponsors.map((sponsor) => (
+            <img
+              src={sponsor.data.logo}
+              alt={sponsor.data.name}
+              class="h-16 w-32 rounded-md object-contain ring-1 ring-pine/10"
+            />
           ))
         }
       </div>

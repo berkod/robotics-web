@@ -31,9 +31,9 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 
 ## Sponsors
 
-- [ ] Current sponsor list grouped by tier — currently 8 placeholder entries
-      in `src/content/sponsors/` using Platinum/Gold/Silver/Bronze; confirm
-      these are the team's actual tier names
+- [ ] Current sponsor list — currently 8 placeholder entries in
+      `src/content/sponsors/`. The team does not use sponsorship tiers, so
+      every sponsor renders at the same size.
 - [ ] Sponsor logo files (vector or high-res raster) for each sponsor
 - [ ] Sponsor website links, where applicable
 
