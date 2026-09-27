@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Rookie All Star Award",
+    "award_type": 10,
+    "event_key": "2026nysu",
+    "recipient_list": [{ "team_key": "frc10262", "awardee": null }],
+    "year": 2026
+  },
+  {
+    "name": "District Event Finalist",
+    "award_type": 2,
+    "event_key": "2026nyn2",
+    "recipient_list": [{ "team_key": "frc10262", "awardee": null }],
+    "year": 2026
+  }
+]

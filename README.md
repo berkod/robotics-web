@@ -72,8 +72,12 @@ Unset by default, so the site works correctly with no configuration (both
 widgets show their fallback state). Set these in Netlify once available —
 see `deploy.md`'s Environment variables section for details:
 
-- `PUBLIC_TBA_AUTH_KEY`, `PUBLIC_TBA_TEAM_KEY`, `PUBLIC_TBA_YEAR` — Blue
-  Alliance widget
+- `TBA_AUTH_KEY` — Blue Alliance widget. Read at build time, so it is
+  deliberately *not* `PUBLIC_`-prefixed and never reaches the browser; don't
+  add the prefix. `TBA_TEAM_KEY` and `TBA_YEAR` are optional overrides
+  (they default to `frc10262` and the build's calendar year). To see the
+  widget populated without a key, run `TBA_FIXTURES=1 npm run dev` — it
+  renders clearly-badged sample data, not real results.
 - `PUBLIC_INSTAGRAM_EMBED_URL` — Instagram feed (needs a SnapWidget/LightWidget
   account first, see `design.md` Decision 5 — that's a team action, not
   something committed to the repo)

@@ -121,12 +121,81 @@ See `missing-assets.md` for where to get each value.
 
 | Variable | Purpose |
 |---|---|
-| `PUBLIC_TBA_AUTH_KEY` | TBA Read API key, from your TBA account's dashboard |
-| `PUBLIC_TBA_TEAM_KEY` | The team's TBA key, e.g. `frc10262` |
-| `PUBLIC_TBA_YEAR` | Competition season year to show, e.g. `2026` |
+| `TBA_AUTH_KEY` | TBA Read API key, from your TBA account's dashboard |
+| `TBA_TEAM_KEY` | The team's TBA key — defaults to `frc10262`, so only set this if it changes |
+| `TBA_YEAR` | Competition season to show. Defaults to the build's calendar year; set it only to pin a past season |
 | `PUBLIC_INSTAGRAM_EMBED_URL` | Embed URL from a widget provider (e.g. SnapWidget) — see `design.md` Decision 5 |
 
-All of these are prefixed `PUBLIC_` because Astro only exposes `PUBLIC_`-prefixed
-env vars to client-side code — that's intentional here, not an oversight:
-the TBA read key and Instagram embed URL are meant to be public (see
-`design.md`'s Risks section for why that's fine for the TBA key).
+The three `TBA_` vars have **no** `PUBLIC_` prefix, and that matters: Astro
+only exposes `PUBLIC_`-prefixed vars to client-side code, so leaving the
+prefix off is what keeps the TBA key out of the browser bundle. The widget
+fetches at build time and ships plain HTML, so client-side code never needs
+the key. **Do not add a `PUBLIC_` prefix to them** — doing so would publish
+the key in the page source. (`PUBLIC_INSTAGRAM_EMBED_URL` keeps its prefix
+because that embed genuinely is loaded by the browser.)
+
+> Renamed from `PUBLIC_TBA_AUTH_KEY` / `PUBLIC_TBA_TEAM_KEY` /
+> `PUBLIC_TBA_YEAR`. If those were already set in Netlify, delete them and
+> add the unprefixed names — the old ones are now ignored.
+
+## Keeping TBA results fresh
+
+Because the fetch happens during the build, new match results appear on the
+next **build**, not on the next page load. Netlify deploys on every push to
+`main`, so outside competition season this needs nothing. During season,
+schedule a rebuild:
+
+1. **Site configuration → Build & deploy → Build hooks → Add build hook**.
+   Name it something like `TBA refresh` and copy the URL it gives you.
+2. Have something `POST` to that URL on a schedule. A `curl -X POST <url>`
+   from any cron runner works; a GitHub Action on a schedule keeps it in this
+   repo:
+
+   ```yaml
+   # .github/workflows/tba-refresh.yml
+   name: Refresh TBA results
+   on:
+     schedule:
+       - cron: "0 */6 * * *"   # every 6 hours
+     workflow_dispatch:
+   jobs:
+     refresh:
+       runs-on: ubuntu-latest
+       steps:
+         - run: curl -fsS -X POST -d '{}' "${{ secrets.NETLIFY_BUILD_HOOK }}"
+   ```
+
+   Store the hook URL as the `NETLIFY_BUILD_HOOK` repository secret — it's a
+   URL that triggers deploys, so treat it like a credential.
+
+Every triggered build counts against Netlify's free-tier build minutes, so
+prefer a coarse interval (every 6 hours, or hourly only on competition
+weekends) over a tight one.
+
+### TODO: consider a scheduled data pull instead of a full rebuild
+
+Worth evaluating, not yet decided. Rather than rebuilding the whole site to
+pick up new results, a scheduled job could fetch TBA once, write a small
+`tba.json`, and have the page read that file — so results refresh without a
+deploy. This is possible, with a real tradeoff in each direction:
+
+- **Commit the JSON to the repo** (GitHub Action on a cron, fetch + commit if
+  changed). Keeps the key in GitHub secrets, gives a full history of results,
+  and the widget keeps reading it at build time exactly as it does now — the
+  commit itself triggers the rebuild. Simplest option, but it's still a
+  rebuild per refresh and it adds bot commits to `main`.
+- **Write the JSON to `public/tba.json` at build time and fetch it
+  client-side on page load.** Keeps the key server-side and decouples render
+  from the API, but the file is still only as fresh as the last build, so on
+  its own this buys nothing over what we do now — it only pays off combined
+  with an external store.
+- **A Netlify scheduled function writing to Netlify Blobs**, with the widget
+  reading Blobs on load. This is the only variant that genuinely refreshes
+  without a deploy. Costs the most moving parts: a functions directory, a
+  Blobs store, a runtime read path, and a loading state in the widget that
+  build-time rendering currently avoids entirely.
+
+Recommendation if we pick this up: start with the first option. It's a single
+workflow file, needs no new runtime surface, and can be dropped later without
+touching the widget. The third is only worth it if "results within minutes,
+without a deploy" becomes a real requirement.
