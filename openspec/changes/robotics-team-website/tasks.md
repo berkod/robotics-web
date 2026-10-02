@@ -92,8 +92,8 @@ unchecked items below and `missing-assets.md`.
 ## 13. The Blue Alliance Widget (live)
 
 - [ ] 13.1 Obtain the team's TBA team key and a TBA Read API v3 key — team key is known (`frc10262`, in `.env.example`); the Read API key itself needs the team's TBA account, see `missing-assets.md`
-- [x] 13.2 Build a client-side Astro island that fetches team events, matches, and awards from the TBA API, replacing the Phase 1 static placeholder
-- [x] 13.3 Default the widget to the current competition season (via `PUBLIC_TBA_YEAR`)
+- [x] 13.2 Build a component that fetches team events, matches, and awards from the TBA API, replacing the Phase 1 static placeholder — fetched at build time and rendered as static HTML (no client JS, no key in the browser); see `design.md` Decision 4
+- [x] 13.3 Default the widget to the current competition season (the build's calendar year, overridable via `TBA_YEAR`)
 - [x] 13.4 Add a graceful fallback (friendly message + link to the team's TBA profile) when the API request fails or times out
 - [x] 13.5 Place the full widget on its own section/page and a condensed teaser version on the homepage
 

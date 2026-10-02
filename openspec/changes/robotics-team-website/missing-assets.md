@@ -20,7 +20,7 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 - [ ] Real photo for each season's robot (currently
       `public/images/placeholder-robot.svg` for both)
 - [ ] Three real spec bullets per robot (currently Lorem Ipsum sentences)
-- [ ] Confirm whether older seasons beyond 2025–2026 should be included
+- [x] Confirm whether older seasons beyond 2025–2026 should be included
 
 ## Team Leadership
 
@@ -73,11 +73,20 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 ## Integrations
 
 - [x] Team's TBA (The Blue Alliance) team key — **frc10262**
-      (`src/lib/site.ts`, and set as the `PUBLIC_TBA_TEAM_KEY` default in
-      `.env.example`)
-- [ ] TBA Read API key — generate one from the team's TBA account dashboard,
-      set as `PUBLIC_TBA_AUTH_KEY` in Netlify env vars (never commit it)
-- [ ] Current competition season/year — set as `PUBLIC_TBA_YEAR`
+      (`src/lib/site.ts`, and the `TBA_TEAM_KEY` default in `.env.example`;
+      the widget falls back to it automatically, so it need not be set)
+- [ ] **TBA Read API key** — the one genuinely blocking item for this widget.
+      Generate it from the team's TBA account dashboard
+      ([thebluealliance.com/account](https://www.thebluealliance.com/account)),
+      then set `TBA_AUTH_KEY` in Netlify env vars (never commit it). Note the
+      name has **no** `PUBLIC_` prefix — see `deploy.md` for why that matters.
+      Every TBA v3 endpoint returns `401` without a key, including `/status`,
+      so there is no partial or anonymous access to fall back on. Until the
+      key exists the widget renders its "not connected yet" state; run
+      `TBA_FIXTURES=1 npm run dev` to see the populated layout meanwhile.
+- [x] Current competition season/year — `TBA_YEAR` now defaults to the build's
+      calendar year, which tracks FRC season numbering. Set it only to pin a
+      past season.
 - [x] Team's Instagram handle — **@bionic_buzzers** (`src/lib/site.ts`)
 - [ ] Instagram embed provider account (e.g. SnapWidget or LightWidget — see
       `design.md` Decision 5) and the resulting embed URL, set as

@@ -82,8 +82,43 @@ Free, open-source, git-based CMS that renders a form-based admin UI at `/admin` 
 **3. Hosting: Netlify**
 Chosen specifically because Decap CMS's simplest zero-backend auth path is Netlify Identity + Git Gateway (login with email/password, no separate OAuth app to run). Netlify also gives free git-push-to-deploy and PR preview builds. Vercel was considered but would require standing up a separate OAuth proxy for Decap login, adding infra the team would have to maintain. The POC deploys to Netlify too, just without Identity/Git Gateway enabled yet.
 
-**4. The Blue Alliance widget: direct client-side fetch to the TBA Read API v3 — Phase 2**
-A small Astro island fetches team match/event/award data straight from `https://www.thebluealliance.com/api/v3` using the team's public **read-only** API key, rendered on load (client:visible). No server proxy. TBA read keys are meant to be used from clients, are free, and rate-limited/read-only, so there's no meaningful exposure from shipping the key in client JS. A server-side proxy was considered and rejected as unneeded complexity for a static site with no backend. The Phase 1 POC renders a static styled placeholder in this widget's exact position instead.
+**4. The Blue Alliance widget: build-time fetch of the TBA Read API v3, rendered as static HTML**
+`src/lib/blue-alliance.ts` calls `https://www.thebluealliance.com/api/v3` from
+the component's frontmatter during `astro build`, and
+`BlueAllianceWidget.astro` renders the result as plain HTML — no client-side
+JavaScript, no API call, and no API key in the browser. The key is read from
+`TBA_AUTH_KEY`, deliberately unprefixed so Astro keeps it out of the client
+bundle.
+
+> **Supersedes the original Decision 4**, which specified a client-side
+> `client:visible` island fetching with a `PUBLIC_`-prefixed key, on the
+> reasoning that TBA read keys are "meant to be used from clients" and so
+> shipping the key was harmless. That reasoning isn't wrong about the blast
+> radius — TBA read keys are free, read-only, and rate-limited per key, so the
+> worst case is throttling or revocation, not data loss. It was simply
+> unnecessary: this is a static site with no interactivity requirement here, so
+> fetching at build time avoids publishing the key *and* removes the widget's
+> client JS and loading flicker at the same time. The rejected "server proxy"
+> alternative is still rejected — build-time fetching is not a proxy and adds
+> no runtime surface.
+
+Consequences worth naming:
+
+- Results refresh per **build**, not per page load. A Netlify build hook on a
+  schedule covers competition season (`deploy.md`, "Keeping TBA results
+  fresh"), and the capability spec was reworded to match. A scheduled
+  data-pull-into-JSON variant that would decouple refresh from deploys is
+  noted as a TODO there, not adopted.
+- A TBA outage happens at build time, so it must never fail a deploy:
+  `getTeamSeason()` never rejects, resolving to a fallback state instead.
+- `TBA_FIXTURES=1` renders constructed sample data so the populated state is
+  developable without a key (`src/lib/fixtures/README.md`). It is badged
+  "Sample data" in the UI so fabricated results can't be mistaken for real
+  ones.
+- The generated client `tba-api-v3client` package was evaluated and rejected:
+  npm publishes 3.3.1 (2022) against a repo last touched in 2020, it pins
+  `superagent@3.5.2`, and this widget needs three GET requests that a ~10-line
+  `fetch` wrapper covers without a dependency.
 
 **5. Instagram feed: third-party embed widget (e.g. SnapWidget or LightWidget), not the Instagram Graph API directly — Phase 2**
 The official Graph API requires an Instagram Business/Creator account, app review, and a 60-day access token that must be refreshed by *something* running on a schedule — real ongoing engineering the team can't reliably staff. A drop-in embed widget service handles refresh and rendering for us at a small, often-free tier (typically with light widget-provider branding). This can be swapped for a direct Graph API integration later if the team gets a maintainer who can own token rotation. The Phase 1 POC renders a static styled placeholder grid instead.

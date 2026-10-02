@@ -80,21 +80,22 @@ import Layout from "../layouts/Layout.astro";
   /*
     Hard cut rather than a crossfade — a film negative snaps between states.
     The parent filter composes with .dalek's, so the robot flips back to black
-    during the inverted half of the cycle.
+    during the inverted half of the cycle. Starts on the negative and ends on
+    the natural frame, so after three passes the page simply rests as designed.
   */
   @keyframes negative-flash {
     0%,
     49.99% {
-      filter: none;
+      filter: invert(1) hue-rotate(180deg);
     }
     50%,
     100% {
-      filter: invert(1);
+      filter: none;
     }
   }
 
   .negative {
-    animation: negative-flash 1.5s steps(1, end) infinite;
+    animation: negative-flash 1.5s steps(1, end) 3;
     will-change: filter;
   }
 
