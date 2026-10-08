@@ -8,7 +8,7 @@ const robots = defineCollection({
     year: z.number(),
     name: z.string(),
     photo: z.string(),
-    bullets: z.array(z.object({ bullet: z.string() })).length(3),
+    bullets: z.array(z.string()).min(1).max(5),
   }),
 });
 
@@ -30,6 +30,34 @@ const mentors = defineCollection({
   schema: person,
 });
 
+/**
+ * A sponsor link is rendered straight into an `href` (see sponsors.astro), so
+ * `.url()` alone is not enough: it accepts `javascript:alert(1)`, which would
+ * be a stored-XSS vector, along with schemes this site has no use for
+ * (`ftp:`, `mailto:`) and schemeless hosts like `https://localhost`.
+ *
+ * Restricted here to http(s) with a dotted host, mirroring the `pattern` on
+ * the link field in public/admin/config.yml. The CMS catches bad input at edit
+ * time; this is the build-time backstop for anything committed directly.
+ * Keep the two in sync.
+ */
+const absoluteHttpUrl = z
+  .string()
+  .refine(
+    (value) => {
+      let url: URL;
+      try {
+        url = new URL(value);
+      } catch {
+        return false;
+      }
+      if (url.protocol !== "http:" && url.protocol !== "https:") return false;
+      // Require a dot so bare hosts (localhost, intranet names) are rejected.
+      return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(url.hostname);
+    },
+    { message: "Must be a full http(s) URL with a dotted host, e.g. https://example.com" },
+  );
+
 const sponsors = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/sponsors" }),
   schema: z.object({
@@ -37,7 +65,7 @@ const sponsors = defineCollection({
     logo: z.string(),
     // Decap writes "" (not undefined) when an existing link is cleared in
     // the CMS, rather than never filled in — accept both as "no link".
-    link: z.string().url().optional().or(z.literal("")),
+    link: absoluteHttpUrl.optional().or(z.literal("")),
   }),
 });
 

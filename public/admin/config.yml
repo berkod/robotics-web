@@ -15,12 +15,12 @@ collections:
       - { label: "Season Year", name: "year", widget: "number", value_type: "int" }
       - { label: "Robot Name", name: "name", widget: "string" }
       - { label: "Photo", name: "photo", widget: "image" }
-      - label: "Spec Bullets (exactly 3)"
+      - label: "Spec Bullets (1-5)"
         name: "bullets"
         widget: "list"
         field: { label: "Bullet", name: "bullet", widget: "string" }
-        min: 3
-        max: 3
+        min: 1
+        max: 5
 
   - name: leadership
     label: "Student Leaders"
@@ -52,7 +52,19 @@ collections:
     fields:
       - { label: "Sponsor Name", name: "name", widget: "string" }
       - { label: "Logo", name: "logo", widget: "image" }
-      - { label: "Website Link", name: "link", widget: "string", required: false }
+      # Optional, but if filled it must be a full absolute URL: the Zod schema
+      # in src/content.config.ts runs .url(), so a bare domain like
+      # "buzzers.com" would save cleanly here and then fail the Netlify build.
+      # Validating in the CMS puts the error in front of the editor instead.
+      # The ^$ alternative keeps an intentionally blank field valid.
+      - label: "Website Link"
+        name: "link"
+        widget: "string"
+        required: false
+        hint: "Full URL including https:// — or leave blank if the sponsor has no site."
+        pattern:
+          - '^$|^https?://[a-zA-Z0-9][a-zA-Z0-9-]*(\.[a-zA-Z0-9][a-zA-Z0-9-]*)+(:[0-9]{1,5})?([/?#][^\s]*)?$'
+          - "Must be a full URL starting with https:// (for example https://example.com), or left blank"
 
   - name: pages
     label: "Page Content"
