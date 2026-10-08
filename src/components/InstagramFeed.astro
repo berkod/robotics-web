@@ -44,7 +44,7 @@ const handle = profileHref.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").r
         src={embedUrl}
         title="Instagram feed"
         loading="lazy"
-        class="h-full min-h-[16rem] w-full rounded-lg border-0"
+        class="min-h-[16rem] w-full rounded-lg border-0"
       />
     )
   }
@@ -61,3 +61,25 @@ const handle = profileHref.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").r
     });
   }
 </script>
+
+{/*
+  LightWidget's resize helper. The widget iframe renders client-side and
+  reports its rendered height by postMessage; this script is what listens for
+  that and sets the iframe's inline height, so the feed sizes to its content
+  instead of being cropped by our CSS. It finds the iframe by matching the
+  widget id in its `src` — no extra class or attribute needed — and only
+  accepts messages whose origin is lightwidget.com.
+
+  MUST stay after the script above, which locates the widget via
+  `document.currentScript.previousElementSibling`.
+
+  Loaded only when an embed URL is configured, so the unconfigured fallback
+  state pulls in no third-party script. `defer` keeps it off the critical
+  path; the iframe is lazy-loaded, so the listener is always registered
+  before the widget can post its height.
+*/}
+{
+  configured && (
+    <script is:inline defer src="https://cdn.lightwidget.com/widgets/lightwidget.js" />
+  )
+}
