@@ -1,0 +1,10 @@
+   name: Refresh TBA results
+   on:
+     schedule:
+       - cron: "0 21 * * *"   # every 24 hours at 4/5pm ET
+     workflow_dispatch:
+   jobs:
+     refresh:
+       runs-on: ubuntu-latest
+       steps:
+         - run: curl -fsS -X POST -d '{}' "${{ secrets.NETLIFY_BUILD_HOOK }}"
