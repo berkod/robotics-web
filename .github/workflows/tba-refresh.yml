@@ -1,19 +1,16 @@
-   name: Refresh TBA results
-
+name: Refresh TBA results
 on:
-  schedule:
-    # 5:06 PM ET converts to 21:06 UTC (during Daylight Saving Time)
-    # Note: If it is Standard Time (winter), change this to '06 22 * * *'
-    - cron: '06 21 * * *'
-  workflow_dispatch: # Allows you to manually trigger the deployment from the Actions tab
+    schedule:
+        # 5:06 PM ET converts to 21:06 UTC (during Daylight Saving Time)
+        # Note: If it is Standard Time (winter), change this to '06 22 * * *'
+        - cron: '06 21 * * *'
+    workflow_dispatch: # Allows you to manually trigger the deployment from the Actions tab
 
 jobs:
-  trigger_webhook:
-    name: Trigger Netlify Build Hook
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send POST Request to Netlify
+    trigger_webhook:
+        name: Trigger Netlify Build Hook
+        runs-on: ubuntu-latest
         env:
-          NETLIFY_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK }}
-        run: |
-          curl -X POST -d {} "$NETLIFY_HOOK_URL"
+            NETLIFY_HOOK_URL: '${{ secrets.NETLIFY_BUILD_HOOK }}'
+        steps:
+            - run: curl -X POST -d {}  ${{ $secrets.NETLIFY_HOOK_URL }}'
