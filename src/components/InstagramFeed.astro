@@ -1,23 +1,36 @@
 ---
 import { INSTAGRAM_LINK } from "../lib/site";
 
-// Requires a third-party embed widget URL (e.g. SnapWidget or LightWidget —
-// see design.md Decision 5) in PUBLIC_INSTAGRAM_EMBED_URL. The team needs to
-// sign up with a provider themselves — see missing-assets.md. Until then,
-// or if the embed fails to load, this shows the fallback follow-us link.
-const embedUrl = import.meta.env.PUBLIC_INSTAGRAM_EMBED_URL as string | undefined;
-const configured = Boolean(embedUrl);
+/**
+ * Instagram feed via SociableKit (see design.md Decision 5). Create the widget
+ * at sociablekit.com and put its embed id in PUBLIC_INSTAGRAM_EMBED_ID — the
+ * team needs to sign up themselves, see missing-assets.md.
+ *
+ * SociableKit renders client-side rather than in an iframe: its script finds
+ * `.sk-instagram-feed` by class name, reads `data-embed-id`, and injects the
+ * feed. Both of those are verified against the shipped widget.js, not just its
+ * docs — it uses getElementsByClassName('sk-instagram-feed').
+ *
+ * The important consequence is that failure here is SILENT. A blocked script,
+ * a network error, or the free plan's 2,000-monthly-view cap all leave the
+ * container simply empty, with no error event to hook. So the fallback starts
+ * visible — which is also the correct no-JavaScript state — then hides itself
+ * optimistically on load to avoid flashing, and comes back if the container is
+ * still empty once the grace period is up.
+ */
+const embedId = import.meta.env.PUBLIC_INSTAGRAM_EMBED_ID as string | undefined;
+const configured = Boolean(embedId);
 const profileHref = INSTAGRAM_LINK;
 const handle = profileHref.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/$/, "");
+
+/** How long to let the third-party script render before showing the fallback. */
+const FEED_TIMEOUT_MS = 6000;
 ---
 
 <div data-ig-widget class="h-full">
   <div
     data-ig-fallback
-    class:list={[
-      "flex h-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-signal/40 bg-mint px-6 py-12 text-center",
-      configured && "hidden",
-    ]}
+    class="flex h-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-signal/40 bg-mint px-6 py-12 text-center"
   >
     <p class="font-display text-lg font-semibold text-deep-pine">Instagram feed</p>
     <p class="text-sm text-deep-pine">
@@ -39,47 +52,38 @@ const handle = profileHref.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").r
 
   {
     configured && (
-      <iframe
-        data-ig-iframe
-        src={embedUrl}
-        title="Instagram feed"
-        loading="lazy"
-        class="min-h-[16rem] w-full rounded-lg border-0"
+      <div
+        data-ig-feed
+        class="sk-instagram-feed min-h-[16rem] w-full"
+        data-embed-id={embedId}
       />
     )
   }
 </div>
 
-<script define:vars={{ configured }}>
+<script define:vars={{ configured, FEED_TIMEOUT_MS }}>
   if (configured) {
-    const widget = document.currentScript?.previousElementSibling;
+    const widget = document.querySelector("[data-ig-widget]");
     const fallback = widget?.querySelector("[data-ig-fallback]");
-    const iframe = widget?.querySelector("[data-ig-iframe]");
-    iframe?.addEventListener("error", () => {
-      iframe.classList.add("hidden");
-      fallback?.classList.remove("hidden");
-    });
+    const feed = widget?.querySelector("[data-ig-feed]");
+
+    if (fallback && feed) {
+      // Assume it will load, so the fallback does not flash on every visit.
+      fallback.classList.add("hidden");
+
+      // SociableKit reports nothing on failure, so the only signal available
+      // is whether it actually put anything in the container.
+      setTimeout(() => {
+        if (feed.childElementCount === 0) {
+          fallback.classList.remove("hidden");
+        }
+      }, FEED_TIMEOUT_MS);
+    }
   }
 </script>
 
-{/*
-  LightWidget's resize helper. The widget iframe renders client-side and
-  reports its rendered height by postMessage; this script is what listens for
-  that and sets the iframe's inline height, so the feed sizes to its content
-  instead of being cropped by our CSS. It finds the iframe by matching the
-  widget id in its `src` — no extra class or attribute needed — and only
-  accepts messages whose origin is lightwidget.com.
-
-  MUST stay after the script above, which locates the widget via
-  `document.currentScript.previousElementSibling`.
-
-  Loaded only when an embed URL is configured, so the unconfigured fallback
-  state pulls in no third-party script. `defer` keeps it off the critical
-  path; the iframe is lazy-loaded, so the listener is always registered
-  before the widget can post its height.
-*/}
 {
   configured && (
-    <script is:inline defer src="https://cdn.lightwidget.com/widgets/lightwidget.js" />
+    <script is:inline defer src="https://widgets.sociablekit.com/instagram-feed/widget.js" />
   )
 }

@@ -78,7 +78,7 @@ see `deploy.md`'s Environment variables section for details:
   (they default to `frc10262` and the build's calendar year). To see the
   widget populated without a key, run `TBA_FIXTURES=1 npm run dev` — it
   renders clearly-badged sample data, not real results.
-- `PUBLIC_INSTAGRAM_EMBED_URL` — Instagram feed (needs a SnapWidget/LightWidget
+- `PUBLIC_INSTAGRAM_EMBED_ID` — Instagram feed (needs a SociableKit
   account first, see `design.md` Decision 5 — that's a team action, not
   something committed to the repo)
 

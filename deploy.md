@@ -124,14 +124,14 @@ See `missing-assets.md` for where to get each value.
 | `TBA_AUTH_KEY` | TBA Read API key, from your TBA account's dashboard |
 | `TBA_TEAM_KEY` | The team's TBA key — defaults to `frc10262`, so only set this if it changes |
 | `TBA_YEAR` | Competition season to show. Defaults to the build's calendar year; set it only to pin a past season |
-| `PUBLIC_INSTAGRAM_EMBED_URL` | Embed URL from a widget provider (e.g. SnapWidget) — see `design.md` Decision 5 |
+| `PUBLIC_INSTAGRAM_EMBED_ID` | SociableKit widget embed id — see `design.md` Decision 5 |
 
 The three `TBA_` vars have **no** `PUBLIC_` prefix, and that matters: Astro
 only exposes `PUBLIC_`-prefixed vars to client-side code, so leaving the
 prefix off is what keeps the TBA key out of the browser bundle. The widget
 fetches at build time and ships plain HTML, so client-side code never needs
 the key. **Do not add a `PUBLIC_` prefix to them** — doing so would publish
-the key in the page source. (`PUBLIC_INSTAGRAM_EMBED_URL` keeps its prefix
+the key in the page source. (`PUBLIC_INSTAGRAM_EMBED_ID` keeps its prefix
 because that embed genuinely is loaded by the browser.)
 
 > Renamed from `PUBLIC_TBA_AUTH_KEY` / `PUBLIC_TBA_TEAM_KEY` /

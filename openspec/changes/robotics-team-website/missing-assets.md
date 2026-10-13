@@ -90,7 +90,7 @@ from the team before the content pass (`tasks.md` section 15.1) is complete.
 - [x] Team's Instagram handle — **@bionic_buzzers** (`src/lib/site.ts`)
 - [ ] Instagram embed provider account (e.g. SnapWidget or LightWidget — see
       `design.md` Decision 5) and the resulting embed URL, set as
-      `PUBLIC_INSTAGRAM_EMBED_URL`. Signing up for this account is a team
+      `PUBLIC_INSTAGRAM_EMBED_ID`. Signing up for this account is a team
       action — an agent can't create third-party accounts on the team's
       behalf.
 
