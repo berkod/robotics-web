@@ -1,10 +1,19 @@
    name: Refresh TBA results
-   on:
-     schedule:
-       - cron: "0 21 * * *"   # every 24 hours at 4/5pm ET
-     workflow_dispatch:
-   jobs:
-     refresh:
-       runs-on: ubuntu-latest
-       steps:
-         - run: curl -fsS -X POST -d '{}' "${{ secrets.NETLIFY_BUILD_HOOK }}"
+
+on:
+  schedule:
+    # 5:06 PM ET converts to 21:06 UTC (during Daylight Saving Time)
+    # Note: If it is Standard Time (winter), change this to '06 22 * * *'
+    - cron: '06 21 * * *'
+  workflow_dispatch: # Allows you to manually trigger the deployment from the Actions tab
+
+jobs:
+  trigger_webhook:
+    name: Trigger Netlify Build Hook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send POST Request to Netlify
+        env:
+          NETLIFY_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          curl -X POST -d {} "$NETLIFY_HOOK_URL"
