@@ -143,7 +143,14 @@ const pageTeasers = [
   </section>
 
   <section class="bg-white">
-    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 md:grid-cols-2">
+    {/*
+      Two columns only from lg (1024px), not md (768px). At md each column is
+      ~356px, which squeezes the Instagram feed's three-across photo grid to
+      about 115px per photo — every iPad in portrait lands in that range. From
+      lg a column is ~484px, which the feed handles comfortably, so iPad
+      portrait stacks like mobile and only landscape/desktop splits.
+    */}
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-2">
       {/*
         No trailing link here on purpose. It used to carry "See full results →"
         to /robots, which sat next to the card's own "Full history on The Blue
