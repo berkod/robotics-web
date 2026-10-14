@@ -27,10 +27,10 @@ const handle = profileHref.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").r
 const FEED_TIMEOUT_MS = 6000;
 ---
 
-<div data-ig-widget class="h-full">
+<div data-ig-widget class="flex flex-1 flex-col">
   <div
     data-ig-fallback
-    class="flex h-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-signal/40 bg-mint px-6 py-12 text-center"
+    class="flex flex-1 flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-signal/40 bg-mint px-6 py-12 text-center"
   >
     <p class="font-display text-lg font-semibold text-deep-pine">Instagram feed</p>
     <p class="text-sm text-deep-pine">
@@ -40,11 +40,18 @@ const FEED_TIMEOUT_MS = 6000;
           : "Not connected yet — see missing-assets.md."
       }
     </p>
+    {/*
+      Button-styled, but this sits on the light mint card — so the palette is
+      pine-on-mint (9.08:1), filling to white-on-pine on hover (10.7:1). White
+      text/border/outline here would be ~1.18:1 and effectively invisible,
+      which matters most precisely when the feed has failed and this link is
+      the only way through to Instagram.
+    */}
     <a
       href={profileHref}
       target="_blank"
       rel="noopener noreferrer"
-      class="mt-1 text-sm font-semibold text-pine underline decoration-signal underline-offset-4 hover:text-deep-pine hover:border-white hover:bg-white/10 text-white transition  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white rounded-md border border-white/40"
+      class="mt-1 rounded-md border border-pine/40 px-4 py-2 text-sm font-semibold text-pine transition hover:border-pine hover:bg-pine hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pine"
     >
       Follow @{handle} on Instagram &rarr;
     </a>

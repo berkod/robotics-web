@@ -144,14 +144,20 @@ const pageTeasers = [
 
   <section class="bg-white">
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 md:grid-cols-2">
-      <div class="my-8">
+      {/*
+        No trailing link here on purpose. It used to carry "See full results →"
+        to /robots, which sat next to the card's own "Full history on The Blue
+        Alliance →" — two adjacent links of similar apparent purpose, where the
+        weaker one's text did not name its destination ("Our Robots"). /robots
+        stays reachable from the main nav on every page, so dropping it loses
+        no route. It also leaves both columns structurally identical — heading
+        plus card — which is what lets the two cards align exactly.
+      */}
+      <div class="my-8 flex flex-col">
         <h2 class="mb-3 font-display text-xl font-bold text-pine">Match Results &amp; Awards</h2>
         <BlueAllianceWidget variant="full" />
-        <a href="/robots" class="mt-3 text-sm font-semibold text-signal hover:text-pine hover:underline">
-          See full results &rarr;
-        </a>
       </div>
-      <div class="my-8">
+      <div class="my-8 flex flex-col">
         <h2 class="mb-3 font-display text-xl font-bold text-pine">Follow Along</h2>
         <InstagramFeed />
       </div>
