@@ -10,7 +10,8 @@ jobs:
     trigger_webhook:
         name: Trigger Netlify Build Hook
         runs-on: ubuntu-latest
-        env:
-            NETLIFY_HOOK_URL: '${{ secrets.NETLIFY_BUILD_HOOK }}'
         steps:
-            - run: curl -X POST -d {}  "$NETLIFY_HOOK_URL"
+            - name: Curl execution.
+              env:
+                NETLIFY_HOOK_URL: '${{ secrets.NETLIFY_BUILD_HOOK }}'
+              run: curl -X POST -d {}  "$NETLIFY_HOOK_URL"
